@@ -221,9 +221,41 @@
             margin: 5px 0;
         }
 
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 2px;
+            transition: 0.3s;
+        }
+
         @media (max-width: 768px) {
             .hero-content h1 { font-size: 2.5rem; }
-            .nav-links { display: none; }
+            .hamburger { display: flex; }
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(255, 255, 255, 0.98);
+                flex-direction: column;
+                padding: 1rem 0;
+                box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            }
+            .nav-links.active { display: flex; }
+            .nav-links li {
+                margin: 0;
+                text-align: center;
+                padding: 0.75rem 0;
+            }
         }
     </style>
 </head>
@@ -232,6 +264,11 @@
     <nav>
         <div class="nav-container">
             <a href="#" class="logo">A.C.M. MUNGAI</a>
+            <div class="hamburger" onclick="document.querySelector('.nav-links').classList.toggle('active')">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
             <ul class="nav-links">
                 <li><a href="#about">About</a></li>
                 <li><a href="#experience">Experience</a></li>
@@ -319,7 +356,6 @@
             </div>
             <div class="card">
                 <h3>Kenya Railways Rapid Action Plan</h3>
-                <p><strong>Value:</strong></p>
                 <p>Role: Site Agent/Clerk of Works. Construction of relocation units in Kibera and Mukuru.</p>
             </div>
         </div>
@@ -328,8 +364,8 @@
     <footer id="contact">
         <h2>Get In Touch</h2>
         <div class="contact-info">
-            <p>Email: <strong>acmwaura@gmail.com</strong></p>
-            <p>Phone: <strong>+254 726 442365 | +250 723 593 018</strong></p>
+            <p>Email: <strong><a href="mailto:acmwaura@gmail.com" style="color: white;">acmwaura@gmail.com</a></strong></p>
+            <p>Phone: <strong><a href="tel:+254726442365" style="color: white;">+254 726 442365</a> | <a href="tel:+250723593018" style="color: white;">+250 723 593 018</a></strong></p>
             <p>Residence: Nairobi, Kenya</p>
         </div>
         <p style="font-size: 0.8rem; opacity: 0.7;">&copy; 2026 Andrew Ceaser Mwaura Mungai. All rights reserved.</p>
@@ -339,10 +375,17 @@
         // Smooth scrolling for navigation links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') {
+                    e.preventDefault();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    return;
+                }
+                const targetEl = document.querySelector(targetId);
+                if (targetEl) {
+                    e.preventDefault();
+                    targetEl.scrollIntoView({ behavior: 'smooth' });
+                }
             });
         });
 
