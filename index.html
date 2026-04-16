@@ -18,6 +18,18 @@
             --card-bg: #f8f9fa;
         }
 
+        /* Blueprint canvas sits behind everything */
+        #blueprint-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.06;
+            pointer-events: none;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -90,6 +102,22 @@
             background: linear-gradient(135deg, var(--accent) 0%, #ffffff 100%);
             padding: 0 20px;
             margin-top: 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #hero-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
         }
 
         .hero-content h1 {
@@ -97,9 +125,29 @@
             font-size: 3.5rem;
             margin-bottom: 1rem;
             color: var(--primary);
+            animation: heroSlideUp 1s ease-out 0.3s both;
+        }
+
+        .hero-content .badge {
+            animation: heroSlideUp 1s ease-out 0.1s both;
         }
 
         .hero-content p {
+            animation: heroSlideUp 1s ease-out 0.5s both;
+        }
+
+        @keyframes heroSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-content p.hero-desc {
             font-size: 1.25rem;
             color: var(--light-text);
             max-width: 700px;
@@ -151,12 +199,158 @@
             background: var(--card-bg);
             padding: 30px;
             border-radius: 12px;
-            transition: transform 0.3s;
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s ease;
             border: 1px solid #eee;
         }
 
         .card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 86, 179, 0.1);
+        }
+
+        /* Scroll reveal animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(60px);
+            transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                        transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-60px);
+            transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                        transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .reveal-left.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(60px);
+            transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                        transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .reveal-right.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .stagger-1 { transition-delay: 0.1s; }
+        .stagger-2 { transition-delay: 0.25s; }
+        .stagger-3 { transition-delay: 0.4s; }
+
+        /* Section divider line animation */
+        h2::after {
+            transition: width 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s;
+        }
+
+        .reveal h2::after {
+            width: 0;
+        }
+
+        .reveal.visible h2::after {
+            width: 50px;
+        }
+
+        /* Animated skill tags */
+        .skill-tag {
+            transition: background 0.3s, color 0.3s, transform 0.3s;
+        }
+
+        .skill-tag:hover {
+            background: var(--secondary);
+            color: white;
+            transform: scale(1.08);
+        }
+
+        /* Timeline animation */
+        .timeline-item {
+            opacity: 0;
+            transform: translateX(-40px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+
+        .timeline-item.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Nav scroll shadow */
+        nav.scrolled {
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        /* Floating geometric shapes in hero */
+        .geo-shape {
+            position: absolute;
+            opacity: 0.08;
+            pointer-events: none;
+        }
+
+        .geo-triangle {
+            width: 0;
+            height: 0;
+            border-left: 30px solid transparent;
+            border-right: 30px solid transparent;
+            border-bottom: 52px solid var(--secondary);
+        }
+
+        .geo-circle {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--secondary);
+            border-radius: 50%;
+        }
+
+        .geo-square {
+            width: 35px;
+            height: 35px;
+            border: 3px solid var(--secondary);
+            transform: rotate(45deg);
+        }
+
+        .geo-line {
+            width: 80px;
+            height: 3px;
+            background: var(--secondary);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-20px) rotate(5deg); }
+            50% { transform: translateY(-10px) rotate(-3deg); }
+            75% { transform: translateY(-25px) rotate(2deg); }
+        }
+
+        /* Footer polish */
+        footer a {
+            transition: opacity 0.3s;
+        }
+
+        footer a:hover {
+            opacity: 0.8;
+        }
+
+        /* Prefers reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+            .reveal, .reveal-left, .reveal-right, .timeline-item {
+                opacity: 1;
+                transform: none;
+            }
         }
 
         .card h3 {
@@ -261,6 +455,9 @@
 </head>
 <body>
 
+    <!-- Blueprint grid background -->
+    <canvas id="blueprint-bg"></canvas>
+
     <nav>
         <div class="nav-container">
             <a href="#" class="logo">A.C.M. MUNGAI</a>
@@ -279,24 +476,34 @@
     </nav>
 
     <header>
+        <canvas id="hero-particles"></canvas>
+
+        <!-- Floating geometric shapes -->
+        <div class="geo-shape geo-triangle" style="top:15%;left:8%;animation:float 8s ease-in-out infinite"></div>
+        <div class="geo-shape geo-circle" style="top:25%;right:12%;animation:float 10s ease-in-out 1s infinite"></div>
+        <div class="geo-shape geo-square" style="bottom:20%;left:15%;animation:float 9s ease-in-out 2s infinite"></div>
+        <div class="geo-shape geo-line" style="top:60%;right:8%;animation:float 7s ease-in-out 0.5s infinite"></div>
+        <div class="geo-shape geo-triangle" style="bottom:30%;right:20%;animation:float 11s ease-in-out 1.5s infinite"></div>
+        <div class="geo-shape geo-circle" style="top:50%;left:5%;animation:float 12s ease-in-out 3s infinite"></div>
+
         <div class="hero-content">
             <span class="badge">Civil & Construction Engineer</span>
             <h1>Andrew Ceaser Mwaura Mungai</h1>
-            <p>Clerk of Works | Earth works | Mining | Expert in Infrastructure & ICT Infrastructure Supervision</p>
-            <p style="font-size: 1rem;">Working across Kenya and Rwanda</p>
+            <p class="hero-desc">Clerk of Works | Earth works | Mining | Expert in Infrastructure & ICT Infrastructure Supervision</p>
+            <p class="hero-desc" style="font-size: 1rem;">Working across Kenya and Rwanda</p>
         </div>
     </header>
 
-    <section id="about">
+    <section id="about" class="reveal">
         <h2>Education & Expertise</h2>
         <div class="grid">
-            <div class="card">
+            <div class="card stagger-1">
                 <h3>Education</h3>
                 <p><strong>B.Sc. Civil & Construction Engineering</strong><br>
                 University of Nairobi, 2002 – 2007</p>
                 <p>Second Class Honors</p>
             </div>
-            <div class="card">
+            <div class="card stagger-2">
                 <h3>Professional Bodies</h3>
                 <ul style="list-style: none;">
                     <li>• Engineers Board of Kenya (E.B.K.), B.11490</li>
@@ -304,7 +511,7 @@
                     <li>• The Fiber Optic Association (F.O.A)</li>
                 </ul>
             </div>
-            <div class="card">
+            <div class="card stagger-3">
                 <h3>Technical Skills</h3>
                 <div class="skills-list">
                     <span class="skill-tag">AutoCAD</span>
@@ -317,7 +524,7 @@
         </div>
     </section>
 
-    <section id="experience" style="background-color: #fcfcfc;">
+    <section id="experience" class="reveal" style="background-color: #fcfcfc;">
         <h2>Employment Record</h2>
         
         <div class="timeline-item">
@@ -341,20 +548,20 @@
         </div>
     </section>
 
-    <section id="projects">
+    <section id="projects" class="reveal">
         <h2>Key Assignments</h2>
         <div class="grid">
-            <div class="card">
+            <div class="card stagger-1">
                 <h3>One Stop Border Post (Rwanda - DRC)</h3>
                 <p><strong>Value:</strong> USD 5.7 Million</p>
                 <p>Role: Site Agent/Clerk of Works.Managed bridge rehabilitation and pavement works.</p>
             </div>
-            <div class="card">
+            <div class="card stagger-2">
                 <h3>The East Africa Kidney Institute</h3>
                 <p><strong>Value:</strong> USD 18 Million</p>
                 <p>Role: Site Agent/Clerk of Works. Oversight of a 6-storey reinforced concrete framed building.</p>
             </div>
-            <div class="card">
+            <div class="card stagger-3">
                 <h3>Kenya Railways Rapid Action Plan</h3>
                 <p>Role: Site Agent/Clerk of Works. Construction of relocation units in Kibera and Mukuru.</p>
             </div>
@@ -372,16 +579,139 @@
     </footer>
 
     <script>
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        /* ---- Blueprint Grid Background ---- */
+        (function() {
+            var canvas = document.getElementById('blueprint-bg');
+            var ctx = canvas.getContext('2d');
+            var w, h;
+
+            function resize() {
+                w = canvas.width = window.innerWidth;
+                h = canvas.height = window.innerHeight;
+            }
+            resize();
+            window.addEventListener('resize', resize);
+
+            var offset = 0;
+            function drawGrid() {
+                ctx.clearRect(0, 0, w, h);
+                ctx.strokeStyle = '#0056b3';
+                ctx.lineWidth = 0.5;
+
+                var spacing = 60;
+                var drift = Math.sin(offset * 0.005) * 5;
+
+                // Vertical lines
+                for (var x = drift % spacing; x < w; x += spacing) {
+                    ctx.beginPath();
+                    ctx.moveTo(x, 0);
+                    ctx.lineTo(x, h);
+                    ctx.stroke();
+                }
+                // Horizontal lines
+                for (var y = drift % spacing; y < h; y += spacing) {
+                    ctx.beginPath();
+                    ctx.moveTo(0, y);
+                    ctx.lineTo(w, y);
+                    ctx.stroke();
+                }
+
+                // Accent crosses at intersections (sparse)
+                ctx.lineWidth = 1;
+                for (var cx = drift % (spacing * 3); cx < w; cx += spacing * 3) {
+                    for (var cy = drift % (spacing * 3); cy < h; cy += spacing * 3) {
+                        ctx.beginPath();
+                        ctx.moveTo(cx - 6, cy);
+                        ctx.lineTo(cx + 6, cy);
+                        ctx.moveTo(cx, cy - 6);
+                        ctx.lineTo(cx, cy + 6);
+                        ctx.stroke();
+                    }
+                }
+
+                offset += 0.3;
+                requestAnimationFrame(drawGrid);
+            }
+            drawGrid();
+        })();
+
+        /* ---- Hero Particle System ---- */
+        (function() {
+            var canvas = document.getElementById('hero-particles');
+            var ctx = canvas.getContext('2d');
+            var particles = [];
+            var w, h;
+
+            function resize() {
+                w = canvas.width = canvas.parentElement.offsetWidth;
+                h = canvas.height = canvas.parentElement.offsetHeight;
+            }
+            resize();
+            window.addEventListener('resize', resize);
+
+            function Particle() {
+                this.x = Math.random() * w;
+                this.y = Math.random() * h;
+                this.vx = (Math.random() - 0.5) * 0.6;
+                this.vy = (Math.random() - 0.5) * 0.6;
+                this.radius = Math.random() * 2.5 + 1;
+                this.opacity = Math.random() * 0.3 + 0.05;
+            }
+
+            for (var i = 0; i < 50; i++) {
+                particles.push(new Particle());
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, w, h);
+
+                // Draw connecting lines between nearby particles
+                for (var i = 0; i < particles.length; i++) {
+                    for (var j = i + 1; j < particles.length; j++) {
+                        var dx = particles[i].x - particles[j].x;
+                        var dy = particles[i].y - particles[j].y;
+                        var dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < 150) {
+                            ctx.beginPath();
+                            ctx.strokeStyle = 'rgba(0, 86, 179, ' + (0.08 * (1 - dist / 150)) + ')';
+                            ctx.lineWidth = 1;
+                            ctx.moveTo(particles[i].x, particles[i].y);
+                            ctx.lineTo(particles[j].x, particles[j].y);
+                            ctx.stroke();
+                        }
+                    }
+                }
+
+                // Draw particles
+                for (var k = 0; k < particles.length; k++) {
+                    var p = particles[k];
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(0, 86, 179, ' + p.opacity + ')';
+                    ctx.fill();
+
+                    p.x += p.vx;
+                    p.y += p.vy;
+
+                    if (p.x < 0 || p.x > w) p.vx *= -1;
+                    if (p.y < 0 || p.y > h) p.vy *= -1;
+                }
+
+                requestAnimationFrame(draw);
+            }
+            draw();
+        })();
+
+        /* ---- Smooth Scrolling ---- */
+        document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
             anchor.addEventListener('click', function (e) {
-                const targetId = this.getAttribute('href');
+                var targetId = this.getAttribute('href');
                 if (targetId === '#') {
                     e.preventDefault();
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                     return;
                 }
-                const targetEl = document.querySelector(targetId);
+                var targetEl = document.querySelector(targetId);
                 if (targetEl) {
                     e.preventDefault();
                     targetEl.scrollIntoView({ behavior: 'smooth' });
@@ -389,25 +719,76 @@
             });
         });
 
-        // Simple Fade-in effect on scroll
-        const observerOptions = {
-            threshold: 0.1
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
+        /* ---- Scroll Reveal Observer ---- */
+        var revealObserver = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
                 if (entry.isIntersecting) {
-                    entry.target.style.opacity = "1";
-                    entry.target.style.transform = "translateY(0)";
+                    entry.target.classList.add('visible');
                 }
             });
-        }, observerOptions);
+        }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
 
-        document.querySelectorAll('section').forEach(section => {
-            section.style.opacity = "0";
-            section.style.transform = "translateY(20px)";
-            section.style.transition = "all 0.6s ease-out";
-            observer.observe(section);
+        document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(function(el) {
+            revealObserver.observe(el);
+        });
+
+        /* ---- Timeline item reveal ---- */
+        var timelineObserver = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.2 });
+
+        document.querySelectorAll('.timeline-item').forEach(function(item, index) {
+            item.style.transitionDelay = (index * 0.15) + 's';
+            timelineObserver.observe(item);
+        });
+
+        /* ---- Staggered card reveal within sections ---- */
+        var cardObserver = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    var cards = entry.target.querySelectorAll('.card');
+                    cards.forEach(function(card, i) {
+                        setTimeout(function() {
+                            card.style.opacity = '1';
+                            card.style.transform = 'translateY(0)';
+                        }, i * 150);
+                    });
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.grid').forEach(function(grid) {
+            grid.querySelectorAll('.card').forEach(function(card) {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            });
+            cardObserver.observe(grid);
+        });
+
+        /* ---- Nav shadow on scroll ---- */
+        var nav = document.querySelector('nav');
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        /* ---- Parallax-lite on hero ---- */
+        var header = document.querySelector('header');
+        window.addEventListener('scroll', function() {
+            var scrolled = window.scrollY;
+            if (scrolled < header.offsetHeight) {
+                var heroContent = document.querySelector('.hero-content');
+                heroContent.style.transform = 'translateY(' + (scrolled * 0.25) + 'px)';
+                heroContent.style.opacity = 1 - (scrolled / header.offsetHeight) * 0.6;
+            }
         });
     </script>
 </body>
